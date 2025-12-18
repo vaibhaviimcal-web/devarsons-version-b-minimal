@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devarsons Industries | The Colour Solution Company</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --teal: #2DD4BF;
+            --blue: #3B82F6;
+            --white: #FFFFFF;
+            --off-white: #FAFAFA;
+            --light-grey: #F5F5F5;
+            --grey: #6B7280;
+            --dark-grey: #1F2937;
+            --black: #111827;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--white);
+            color: var(--dark-grey);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* LOADING */
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: var(--white);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #loadingScreen.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .loading-logo {
+            max-width: 350px;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .loading-line {
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--teal), transparent);
+            margin: 2rem auto;
+            animation: lineExpand 2s ease infinite;
+        }
+
+        @keyframes lineExpand {
+            0%, 100% { transform: scaleX(0.5); opacity: 0.3; }
+            50% { transform: scaleX(1); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* NAVIGATION */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem 5%;
+            z-index: 1000;
+            border-bottom: 1px solid var(--light-grey);
+        }
+
+        .nav-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--black);
+            letter-spacing: 0.1em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--grey);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: var(--teal);
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10rem 5% 5rem;
+            background: linear-gradient(180deg, var(--white) 0%, var(--off-white) 100%);
+        }
+
+        .hero-content {
+            max-width: 1000px;
+            text-align: center;
+        }
+
+        .hero-eyebrow {
+            font-size: 0.85rem;
+            color: var(--teal);
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        .hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 5rem;
+            font-weight: 300;
+            color: var(--black);
+            margin-bottom: 2rem;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--grey);
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        .hero-divider {
+            width: 100px;
+            height: 1px;
+            background: var(--teal);
+            margin: 3rem auto;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 0.9rem;
+            border-radius: 0;
+        }
+
+        .btn-primary {
+            background: var(--teal);
+            color: var(--white);
+            border: 1px solid var(--teal);
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--teal);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--black);
+            border: 1px solid var(--black);
+        }
+
+        .btn-secondary:hover {
+            background: var(--black);
+            color: var(--white);
+        }
+
+        /* SECTIONS */
+        section {
+            padding: 8rem 5%;
+        }
+
+        .section-header {
+            max-width: 800px;
+            margin: 0 auto 5rem;
+            text-align: center;
+        }
+
+        .section-eyebrow {
+            font-size: 0.85rem;
+            color: var(--teal);
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-weight: 400;
+            color: var(--black);
+            margin-bottom: 1.5rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--grey);
+            font-weight: 300;
+        }
+
+        .section-divider {
+            width: 60px;
+            height: 1px;
+            background: var(--teal);
+            margin: 0 auto 3rem;
+        }
+
+        /* LEGACY */
+        .legacy-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .legacy-content p {
+            font-size: 1.2rem;
+            line-height: 2;
+            color: var(--grey);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .stats-minimal {
+            display: flex;
+            justify-content: center;
+            gap: 5rem;
+            margin-top: 5rem;
+        }
+
+        .stat-minimal {
+            text-align: center;
+        }
+
+        .stat-minimal h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4rem;
+            color: var(--teal);
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-minimal p {
+            font-size: 0.9rem;
+            color: var(--grey);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* INDUSTRIES */
+        .industries-minimal {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .industry-minimal {
+            padding: 4rem 2rem;
+            text-align: center;
+            border: 1px solid var(--light-grey);
+            transition: all 0.3s;
+        }
+
+        .industry-minimal:hover {
+            background: var(--off-white);
+            border-color: var(--teal);
+        }
+
+        .industry-minimal h3 {
+            font-size: 1.1rem;
+            color: var(--black);
+            font-weight: 500;
+        }
+
+        /* MANUFACTURING */
+        .manufacturing-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .manufacturing-grid h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            color: var(--black);
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        .manufacturing-grid p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--grey);
+            margin-bottom: 1.5rem;
+        }
+
+        .manufacturing-grid ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .manufacturing-grid li {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--light-grey);
+            color: var(--grey);
+            font-size: 0.95rem;
+        }
+
+        /* CERTIFICATIONS */
+        .cert-minimal {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .cert-item {
+            text-align: center;
+        }
+
+        .cert-circle {
+            width: 120px;
+            height: 120px;
+            border: 2px solid var(--teal);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 0.8rem;
+            color: var(--teal);
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .cert-item:hover .cert-circle {
+            background: var(--teal);
+            color: var(--white);
+            transform: scale(1.1);
+        }
+
+        .cert-item p {
+            font-size: 0.85rem;
+            color: var(--grey);
+        }
+
+        /* CONTACT */
+        .contact-minimal {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-minimal h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            color: var(--black);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--grey);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: var(--off-white);
+            border: none;
+            border-bottom: 1px solid var(--light-grey);
+            color: var(--black);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-bottom-color: var(--teal);
+            background: var(--white);
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--off-white);
+            padding: 5rem 5% 3rem;
+            border-top: 1px solid var(--light-grey);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-logo {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--black);
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+        }
+
+        .footer-tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            color: var(--grey);
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section h4 {
+            color: var(--black);
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--grey);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .footer-links a:hover {
+            color: var(--teal);
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid var(--light-grey);
+            text-align: center;
+            color: var(--grey);
+            font-size: 0.85rem;
+        }
+
+        /* PAGE SYSTEM */
+        .page-content {
+            display: none;
+        }
+
+        .page-content.active {
+            display: block;
+            animation: fadeInPage 0.6s ease;
+        }
+
+        @keyframes fadeInPage {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .manufacturing-grid,
+            .legacy-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .industries-minimal {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .industries-minimal {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-minimal {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .content-block {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .content-block p {
+            font-size: 1.05rem;
+            line-height: 1.9;
+            color: var(--grey);
+            margin-bottom: 1.5rem;
+        }
+
+        .content-block ul {
+            padding-left: 2rem;
+            line-height: 2;
+            color: var(--grey);
+        }
+
+        .content-block h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            color: var(--black);
+            margin: 3rem 0 1.5rem;
+            font-weight: 400;
+        }
+    </style>
+</head>
+<body>
+    <!-- LOADING -->
+    <div id="loadingScreen">
+        <div class="loading-content">
+            <img src="https://nyc3.digitaloceanspaces.com/bhindi-drive/files/cab453ed-7d3e-4dfa-9012-038dbc50c1c5/2025-12-11T10-33-30-509Z-c9ed1d86-chat-image-1765449210488-0.jpg" alt="Devarsons" class="loading-logo">
+            <div class="loading-line"></div>
+        </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="nav-container">
+            <div class="nav-logo">DEVARSONS</div>
+            <ul class="nav-links">
+                <li><a onclick="navigateTo('home')">Home</a></li>
+                <li><a onclick="navigateTo('legacy')">Legacy</a></li>
+                <li><a onclick="navigateTo('industries')">Industries</a></li>
+                <li><a onclick="navigateTo('manufacturing')">Manufacturing</a></li>
+                <li><a onclick="navigateTo('quality')">Quality</a></li>
+                <li><a onclick="navigateTo('sustainability')">Sustainability</a></li>
+                <li><a onclick="navigateTo('global')">Global</a></li>
+                <li><a onclick="navigateTo('contact')">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HOME -->
+    <div id="home" class="page-content active">
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-eyebrow">Since 1923</div>
+                <h1 class="hero-title">The Colour<br>Solution Company</h1>
+                <div class="hero-divider"></div>
+                <p class="hero-subtitle">
+                    Pioneering specialty colorants for global industries.<br>
+                    ISO certified. DSIR recognized. Sustainably driven.
+                </p>
+                <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 3rem;">
+                    <a onclick="navigateTo('legacy')" class="btn btn-primary">Our Story</a>
+                    <a onclick="navigateTo('contact')" class="btn btn-secondary">Contact</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- LEGACY -->
+    <div id="legacy" class="page-content">
+        <section style="background: var(--white);">
+            <div class="section-header">
+                <div class="section-eyebrow">01 — Legacy</div>
+                <h2 class="section-title">102 Years of Excellence</h2>
+                <div class="section-divider"></div>
+                <p class="section-subtitle">
+                    From a trading company in 1923 to a global innovation leader in specialty colorants
+                </p>
+            </div>
+
+            <div class="legacy-content">
+                <p>
+                    Devarsons is an ISO 9001, ISO 14001, and OHSAS 18001 accredited company developing and producing specialty colorants. With over 50 years of accumulated experience in color application, our product range is specifically designed to cater to customers in cosmetics, crop protection, plastics, petroleum, and more.
+                </p>
+                <p>
+                    We don't produce any one class of dye—we create an assortment of dyes with different chemistries to suit highly evolved applications. Our dyes comply with worldwide regulations, and our facilities are designed to eliminate foreign contamination.
+                </p>
+            </div>
+
+            <div class="stats-minimal">
+                <div class="stat-minimal">
+                    <h3>1923</h3>
+                    <p>Established</p>
+                </div>
+                <div class="stat-minimal">
+                    <h3>50%</h3>
+                    <p>Export Markets</p>
+                </div>
+                <div class="stat-minimal">
+                    <h3>9</h3>
+                    <p>Product Lines</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- INDUSTRIES -->
+    <div id="industries" class="page-content">
+        <section style="background: var(--off-white);">
+            <div class="section-header">
+                <div class="section-eyebrow">02 — Industries</div>
+                <h2 class="section-title">Sectors We Serve</h2>
+                <div class="section-divider"></div>
+            </div>
+
+            <div class="industries-minimal">
+                <div class="industry-minimal">
+                    <h3>Polymers</h3>
+                </div>
+                <div class="industry-minimal">
+                    <h3>Cosmetics</h3>
+                </div>
+                <div class="industry-minimal">
+                    <h3>Fuel & Lubricants</h3>
+                </div>
+                <div class="industry-minimal">
+                    <h3>Inks</h3>
+                </div>
+                <div class="industry-minimal">
+                    <h3>Non-Destructive Testing</h3>
+                </div>
+                <div class="industry-minimal">
+                    <h3>Medical</h3>
+                </div>
+                <div class="industry-minimal">
+                    <h3>Textiles</h3>
+                </div>
+                <div class="industry-minimal">
+                    <h3>Specialized Applications</h3>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- MANUFACTURING -->
+    <div id="manufacturing" class="page-content">
+        <section style="background: var(--white);">
+            <div class="section-header">
+                <div class="section-eyebrow">03 — Manufacturing</div>
+                <h2 class="section-title">Precision Chemistry</h2>
+                <div class="section-divider"></div>
+            </div>
+
+            <div class="manufacturing-grid">
+                <div>
+                    <h3>Capabilities</h3>
+                    <ul>
+                        <li>Condensation</li>
+                        <li>Bromination</li>
+                        <li>Diazotization</li>
+                        <li>Coupling Reaction</li>
+                        <li>Acylation & Alkylation</li>
+                        <li>Hydrolysis</li>
+                        <li>Oxidation & Reduction</li>
+                        <li>Distillation</li>
+                        <li>Milling</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>Philosophy</h3>
+                    <p>
+                        Cleaner production through preventive approaches. SAP-integrated operations with customized software for production planning and quality assurance.
+                    </p>
+                    <p>
+                        Flexible plants designed for rapid product changes. Energy-optimized equipment. Statistical process control across all operations.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- QUALITY -->
+    <div id="quality" class="page-content">
+        <section style="background: var(--off-white);">
+            <div class="section-header">
+                <div class="section-eyebrow">04 — Quality</div>
+                <h2 class="section-title">Certifications</h2>
+                <div class="section-divider"></div>
+            </div>
+
+            <div class="cert-minimal">
+                <div class="cert-item">
+                    <div class="cert-circle">ISO<br>9001</div>
+                    <p>Quality Management</p>
+                </div>
+                <div class="cert-item">
+                    <div class="cert-circle">ISO<br>14001</div>
+                    <p>Environmental</p>
+                </div>
+                <div class="cert-item">
+                    <div class="cert-circle">OHSAS<br>18001</div>
+                    <p>Health & Safety</p>
+                </div>
+                <div class="cert-item">
+                    <div class="cert-circle">DSIR</div>
+                    <p>R&D Recognition</p>
+                </div>
+                <div class="cert-item">
+                    <div class="cert-circle">EXPORT<br>HOUSE</div>
+                    <p>Govt. Recognized</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- SUSTAINABILITY -->
+    <div id="sustainability" class="page-content">
+        <section style="background: var(--white);">
+            <div class="section-header">
+                <div class="section-eyebrow">05 — Sustainability</div>
+                <h2 class="section-title">Environmental Leadership</h2>
+                <div class="section-divider"></div>
+            </div>
+
+            <div class="content-block">
+                <p style="text-align: center; font-size: 1.2rem;">
+                    Gujarat Cleaner Production Award 2012-13 recipient
+                </p>
+
+                <h3>Water Recycling Innovation</h3>
+                <p>
+                    State-of-the-art water recycling project supported by solar power. Our treated water is pure enough to be recycled for boiler and cooling tower feed.
+                </p>
+
+                <h3>Our Commitment</h3>
+                <ul>
+                    <li>Minimize waste generation through scientific approaches</li>
+                    <li>Reduce raw material and water consumption drastically</li>
+                    <li>Effluent treatment with primary, secondary, and tertiary processes</li>
+                    <li>Emergency response measures for incident control</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <!-- GLOBAL -->
+    <div id="global" class="page-content">
+        <section style="background: var(--off-white);">
+            <div class="section-header">
+                <div class="section-eyebrow">06 — Global</div>
+                <h2 class="section-title">Worldwide Presence</h2>
+                <div class="section-divider"></div>
+            </div>
+
+            <div class="content-block" style="text-align: center;">
+                <p>
+                    From Ahmedabad to the world—serving customers across continents with 50% of our production exported globally.
+                </p>
+            </div>
+
+            <div class="stats-minimal" style="margin-top: 4rem;">
+                <div class="stat-minimal">
+                    <h3>50%</h3>
+                    <p>Americas</p>
+                </div>
+                <div class="stat-minimal">
+                    <h3>40%</h3>
+                    <p>Europe</p>
+                </div>
+                <div class="stat-minimal">
+                    <h3>10%</h3>
+                    <p>Far East</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- CONTACT -->
+    <div id="contact" class="page-content">
+        <section style="background: var(--white);">
+            <div class="section-header">
+                <div class="section-eyebrow">07 — Contact</div>
+                <h2 class="section-title">Get in Touch</h2>
+                <div class="section-divider"></div>
+            </div>
+
+            <div class="contact-minimal">
+                <form onsubmit="submitForm(event)">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Company</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Message</label>
+                        <textarea rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                </form>
+
+                <div style="margin-top: 4rem; text-align: center; color: var(--grey);">
+                    <p><strong>Devarsons Industries Pvt. Ltd.</strong></p>
+                    <p>441 GIDC, Odhav, Ahmedabad 382 415, India</p>
+                    <p style="margin-top: 1rem;">info@devarsons.com | +91 79 2683 0380</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div>
+                <div class="footer-logo">DEVARSONS</div>
+                <div class="footer-tagline">The Colour Solution Company</div>
+                <p style="color: var(--grey); font-size: 0.9rem;">
+                    441 GIDC, Odhav<br>
+                    Ahmedabad 382 415, India
+                </p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul class="footer-links">
+                    <li><a onclick="navigateTo('legacy')">Legacy</a></li>
+                    <li><a onclick="navigateTo('industries')">Industries</a></li>
+                    <li><a onclick="navigateTo('manufacturing')">Manufacturing</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Excellence</h4>
+                <ul class="footer-links">
+                    <li><a onclick="navigateTo('quality')">Quality</a></li>
+                    <li><a onclick="navigateTo('sustainability')">Sustainability</a></li>
+                    <li><a onclick="navigateTo('global')">Global</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <ul class="footer-links">
+                    <li><a href="mailto:info@devarsons.com">Email</a></li>
+                    <li><a onclick="navigateTo('contact')">Contact Form</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            © 2025 Devarsons Industries Pvt. Ltd. | Established 1923
+        </div>
+    </footer>
+
+    <script>
+        // Loading
+        setTimeout(() => {
+            document.getElementById('loadingScreen').classList.add('hidden');
+        }, 3000);
+
+        // Navigation
+        function navigateTo(pageId) {
+            document.querySelectorAll('.page-content').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.location.hash = pageId;
+        }
+
+        // Form
+        function submitForm(event) {
+            event.preventDefault();
+            alert('Thank you! We will contact you within 24 hours.');
+            event.target.reset();
+        }
+
+        // Hash handling
+        window.addEventListener('load', () => {
+            const hash = window.location.hash.substring(1);
+            if (hash && document.getElementById(hash)) {
+                setTimeout(() => navigateTo(hash), 100);
+            }
+        });
+    </script>
+</body>
+</html>
